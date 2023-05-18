@@ -1,0 +1,16 @@
+{
+    "name": "Foundation3D",
+    "rootNamespace": "RamenSea",
+    "references": [
+        "Foundation"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
