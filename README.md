@@ -29,3 +29,5 @@ Todo:
 - Add documenation explaining stuff
 - finalize a spec for the context to make using it easy in a normal project
 - consider having this rely on DotTween
+- Create deploy script
+- Create change log
