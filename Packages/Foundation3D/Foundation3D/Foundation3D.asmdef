@@ -2,7 +2,8 @@
     "name": "Foundation3D",
     "rootNamespace": "RamenSea",
     "references": [
-        "Foundation"
+        "Foundation",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
