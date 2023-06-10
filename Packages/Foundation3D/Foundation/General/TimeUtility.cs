@@ -1,6 +1,7 @@
 using System;
+using RamenSea.Foundation.Extensions;
 
-namespace RamenSea.Foundation.Extensions {
+namespace RamenSea.Foundation.General {
     public static class TimeUtility {
         public static long TimestampMilliseconds() {
             return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();

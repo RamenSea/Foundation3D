@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
-namespace RamenSea.Foundation.Extensions {
+namespace RamenSea.Foundation.General {
      /**
      * Copy and pasted from the built in random class in c#.
      * This allows full cross platform and c# version deterministic randomness.

@@ -1,12 +1,30 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace RamenSea.Foundation3D.Services.KeyStore {
     public interface IKeyStoreJsonSerializer {
         public bool CanSerialize(Type t);
-        public string Serialize(object obj);
+        public string Serialize(object obj, bool prettyPrint = false);
         public T Deserialize<T>([NotNull] string json, [CanBeNull] T defaultValue);
+    }
+
+    public struct UnityJsonSerializer: IKeyStoreJsonSerializer {
+        public bool CanSerialize(Type t) {
+            return true; //todo Unity JSON
+        }
+        public string Serialize(object obj, bool prettyPrint = false) {
+            return JsonUtility.ToJson(obj, prettyPrint: prettyPrint);
+        }
+        public T Deserialize<T>(string json, T defaultValue) {
+            var t = JsonUtility.FromJson<T>(json);
+            if (t == null) {
+                return defaultValue;
+            }
+
+            return t;
+        }
     }
     public interface IKeyStoreService {
         public bool defaultAutoSave { get; set; }
