@@ -1,16 +1,12 @@
 A WIP but I am beginning to collect all my disparate Unity foundational code projects into this
 
 
-This project will eventually require
-
+To install:
 
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
     "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.12.0",
-
-Add:
-
-"com.ramensea.foundation3d": "https://github.com/RamenSea/Foundation3D.git?path=/Packages/Foundation3D",
+    "com.ramensea.foundation3d": "https://github.com/RamenSea/Foundation3D.git?path=/Packages/Foundation3D#0.1.5",
 
 
 

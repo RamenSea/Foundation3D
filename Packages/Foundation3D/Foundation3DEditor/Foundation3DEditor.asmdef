@@ -2,8 +2,8 @@
     "name": "Foundation3DEditor",
     "rootNamespace": "RamenSea",
     "references": [
-        "GUID:2f82fcb5cb077446d9e5274ab7e9237f",
-        "GUID:758fe991cc1184741a12880242267d3b"
+        "Foundation",
+        "Foundation3D"
     ],
     "includePlatforms": [
         "Editor"

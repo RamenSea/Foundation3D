@@ -3,7 +3,8 @@
     "rootNamespace": "RamenSea",
     "references": [
         "Foundation",
-        "UniTask"
+        "UniTask",
+        "NaughtyAttributes.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

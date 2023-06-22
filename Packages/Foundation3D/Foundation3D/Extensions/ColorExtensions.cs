@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RamenSea.Foundation3D.General;
+using UnityEngine;
 
 namespace RamenSea.Foundation3D.Extensions {
     public static class ColorExtensions {
@@ -6,5 +7,8 @@ namespace RamenSea.Foundation3D.Extensions {
             color.a = alpha;
             return color;
         }
+
+        public static HSVColor ToHSV(this Color color) => HSVColor.FromColor(color);
+
     }
 }
