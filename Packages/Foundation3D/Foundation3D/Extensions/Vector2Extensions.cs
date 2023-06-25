@@ -16,7 +16,9 @@ namespace RamenSea.Foundation3D.Extensions {
         public static Vector2 Abs(this Vector2 vector2) {
             return new Vector2(vector2.x.Abs(), vector2.y.Abs());
         }
-
+        public static Vector3 ToVector3(this Vector2 vector2, float z = 0f) {
+            return new Vector3(vector2.x, vector2.y, z);
+        }
         public static float AspectRatio(this Vector2 vector2) {
             return vector2.x / vector2.y;
         }
