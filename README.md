@@ -1,13 +1,20 @@
-A WIP but I am beginning to collect all my disparate Unity foundational code projects into this
+## Overview:
 
+Foundation is a collection of Unity and C# support code I've carried with me since I began using the product ten years
+ago.
 
-To install:
+Not everything is here and its a WIP right now.
+
+Foundation's current version is: `0.1.7`
+
+## Installation:
+
+Add to your "package.json" file
 
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
     "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.12.0",
-    "com.ramensea.foundation3d": "https://github.com/RamenSea/Foundation3D.git?path=/Packages/Foundation3D#0.1.5",
-
+    "com.ramensea.foundation3d": "https://github.com/RamenSea/Foundation3D.git?path=/Packages/Foundation3D#0.1.7",
 
 
 Todo:

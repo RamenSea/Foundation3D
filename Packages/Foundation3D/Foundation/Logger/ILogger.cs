@@ -1,4 +1,5 @@
-namespace RamenSea.Packages.Foundation3D.Foundation.Logger {
+namespace RamenSea.Foundation.Logger {
+    
     public interface ILogger {
         
     }

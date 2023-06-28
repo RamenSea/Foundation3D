@@ -20,7 +20,7 @@ namespace RamenSea.Foundation3D.Composer {
         }
         private bool hasInit = false;
         
-        private void Awake() {
+        protected virtual void Awake() {
             DontDestroyOnLoad(this.gameObject);
             this.Init();
         }

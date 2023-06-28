@@ -15,7 +15,7 @@ namespace RamenSea.Foundation3D.Composer {
         protected virtual void Awake() {
             if (Context.Shared == null) {
                 if (this.contextPrefab != null) {
-                    Context.Shared = this.contextPrefab.Instatiate();
+                    Context.Shared = this.contextPrefab.Instantiate();
                 } else {
                     var go = new GameObject("Context");
                     Context.Shared = go.AddComponent<T>();

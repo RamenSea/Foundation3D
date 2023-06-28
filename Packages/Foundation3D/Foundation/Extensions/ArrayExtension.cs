@@ -22,7 +22,7 @@ namespace RamenSea.Foundation.Extensions {
             return collection.Count > 0;
         }
 
-        public static List<TMapTo> flatMap<TMapTo, TMapFrom>(this List<TMapFrom> array,
+        public static List<TMapTo> FlatMap<TMapTo, TMapFrom>(this List<TMapFrom> array,
                                                              Func<TMapFrom, TMapTo> mapFromTo) {
             var a = new List<TMapTo>();
             for (var i = 0; i < array.Count; i++) {
@@ -33,7 +33,7 @@ namespace RamenSea.Foundation.Extensions {
             return a;
         }
 
-        public static List<TMapTo> flatMap<TMapTo, TMapFrom>(this TMapFrom[] array,
+        public static List<TMapTo> FlatMap<TMapTo, TMapFrom>(this TMapFrom[] array,
                                                              Func<TMapFrom, TMapTo> mapFromTo) {
             var a = new List<TMapTo>();
             for (var i = 0; i < array.Length; i++) {
@@ -44,7 +44,7 @@ namespace RamenSea.Foundation.Extensions {
             return a;
         }
 
-        public static List<T> filter<T>(this T[] array, Func<T, bool> filterFunc) {
+        public static List<T> Filter<T>(this T[] array, Func<T, bool> filterFunc) {
             var a = new List<T>();
             for (var i = 0; i < array.Length; i++) {
                 var t = array[i];
@@ -104,7 +104,7 @@ namespace RamenSea.Foundation.Extensions {
             return a[a.RandomIndex(random)];
         }
 
-        public static void shuffle<T>(this T[] a, Random random) {
+        public static void Shuffle<T>(this T[] a, Random random) {
             var n = a.Length;
             while (n > 1) {
                 var k = random.Next(n);
@@ -113,7 +113,7 @@ namespace RamenSea.Foundation.Extensions {
             }
         }
 
-        public static void shuffle<T>(this List<T> a, Random random) {
+        public static void Shuffle<T>(this List<T> a, Random random) {
             var n = a.Count;
             while (n > 1) {
                 var k = random.Next(n);

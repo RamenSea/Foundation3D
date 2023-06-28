@@ -4,6 +4,15 @@ using RamenSea.Foundation.General;
 using UnityEngine;
 
 namespace RamenSea.Foundation3D.Services.KeyStore {
+    /// <summary>
+    /// The generic implementation of IKeyStoreService built on top of Unity's PlayerPrefs
+    /// This is a very useful tool for small projects or for saving a small amount of data.
+    ///
+    /// This should not be used if you plan on saving large sets of data. Foundation does not offer a solution for that
+    /// However there are several good solutions that exist in the Unity ecosystem.
+    /// 
+    /// TODO: incorporate a better system for large save files and large json blobs
+    /// </summary>
     public class KeyStoreService : IKeyStoreService {
         public bool defaultAutoSave { get; set; } = true;
         public string keyPrefix { get; set; } = null;
