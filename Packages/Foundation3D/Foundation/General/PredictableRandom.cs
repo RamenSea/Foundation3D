@@ -3,13 +3,36 @@ using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
 namespace RamenSea.Foundation.General {
-     /**
-     * Copy and pasted from the built in random class in c#.
-     * This allows full cross platform and c# version deterministic randomness.
-     */
+    /// <summary>
+    /// THIS IS A COPY AND PASTE OF C#'s BUILTIN RANDOM CLASS.
+    /// C# runtimes give no guarantee that randomness will stay consistent across platforms and version. This class
+    /// locks the random implementation down to a specific implementation to guarantee predictable randomness.
+    ///
+    /// !DO NOT USE THIS CLASS FOR ANYTHING REQUIRING "TRUE" RANDOMNESS!
+    ///
+    /// The class has been modified to allow for object reuse as well as easy serialization and state sharing
+    ///
+    /// No offense to Microsoft but the way they are naming their private variables leaves a lot to be desired...
+    /// </summary>
     [ComVisible(true)]
     [Serializable]
     public class PredictableRandom {
+         /// <summary>
+         /// State for the random class
+         /// Stores the array of scrambled ints and the index. There has to be a better way for this lol
+         /// </summary>
+         [Serializable]
+         public struct State {
+             public int iNext;
+             public int iNextP;
+             public int[] seedArray;
+
+             public void Copy(State other) {
+                 this.iNext = other.iNext;
+                 this.iNextP = other.iNextP;
+                 other.seedArray.CopyTo(this.seedArray, 0);
+             }
+         }
         //
         // Private Constants 
         //
@@ -17,67 +40,53 @@ namespace RamenSea.Foundation.General {
         private const int MSEED = 161803398;
         private const int MZ = 0;
 
-        //
-        // Public Constants
-        //
-
-        //
-        // Native Declarations
-        //
-
-        //
-        // Constructors
-        //
-
-        private bool _clearSeedArray;
-
-
-        //
-        // Member Variables
-        //
-        private int inext;
-        private int inextp;
-        private int[] SeedArray = new int[56];
-
+        private State _state;
+        public State state {
+            get => this._state;
+            set => this._state.Copy(value);
+        }
         public PredictableRandom()
             : this(Environment.TickCount) { }
 
         public PredictableRandom(int seed) {
+            this._state = new State() {
+                seedArray = new int[56],
+            };
             this.Reseed(seed);
+        }
+        public PredictableRandom(State state) {
+            this._state = new State() {
+                seedArray = new int[56],
+            };
+            this.state = state;
         }
 
         public void Reseed(int seed) {
-            if (this._clearSeedArray)
-                for (var i = 0; i < this.SeedArray.Length; i++)
-                    this.SeedArray[i] = 0; // this might not be necessary, maybe just this.SeedArray[0] = 0;
-
-            this._clearSeedArray = true;
             int ii;
             int mj, mk;
 
             //Initialize our Seed array.
             var subtraction = seed == int.MinValue ? int.MaxValue : Math.Abs(seed);
             mj = MSEED - subtraction;
-            this.SeedArray[55] = mj;
+            this._state.seedArray[55] = mj;
             mk = 1;
             for (var i = 1; i < 55; i++) {
                 //Apparently the range [1..55] is special (Knuth) and so we're wasting the 0'th position.
                 ii = 21 * i % 55;
-                this.SeedArray[ii] = mk;
+                this._state.seedArray[ii] = mk;
                 mk = mj - mk;
                 if (mk < 0) mk += MBIG;
-                mj = this.SeedArray[ii];
+                mj = this._state.seedArray[ii];
             }
 
             for (var k = 1; k < 5; k++)
             for (var i = 1; i < 56; i++) {
-                this.SeedArray[i] -= this.SeedArray[1 + (i + 30) % 55];
-                if (this.SeedArray[i] < 0) this.SeedArray[i] += MBIG;
+                this._state.seedArray[i] -= this._state.seedArray[1 + (i + 30) % 55];
+                if (this._state.seedArray[i] < 0) this._state.seedArray[i] += MBIG;
             }
 
-            this.inext = 0;
-            this.inextp = 21;
-            seed = 1;
+            this._state.iNext = 0;
+            this._state.iNextP = 21;
         }
         //
         // Package Private Methods
@@ -97,21 +106,21 @@ namespace RamenSea.Foundation.General {
 
         private int InternalSample() {
             int retVal;
-            var locINext = this.inext;
-            var locINextp = this.inextp;
+            var locINext = this._state.iNext;
+            var locINextp = this._state.iNextP;
 
             if (++locINext >= 56) locINext = 1;
             if (++locINextp >= 56) locINextp = 1;
 
-            retVal = this.SeedArray[locINext] - this.SeedArray[locINextp];
+            retVal = this._state.seedArray[locINext] - this._state.seedArray[locINextp];
 
             if (retVal == MBIG) retVal--;
             if (retVal < 0) retVal += MBIG;
 
-            this.SeedArray[locINext] = retVal;
+            this._state.seedArray[locINext] = retVal;
 
-            this.inext = locINext;
-            this.inextp = locINextp;
+            this._state.iNext = locINext;
+            this._state.iNextP = locINextp;
 
             return retVal;
         }
