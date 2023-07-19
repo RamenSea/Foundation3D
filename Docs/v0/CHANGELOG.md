@@ -1,3 +1,7 @@
+V 0.2.0
+
+- Finally brought in some recycler types into the library. Its a WIP to generalize these enough to be useful
+
 V 0.1.8
 
 - Locked PredictableRandom to a hard set of random values
