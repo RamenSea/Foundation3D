@@ -1,3 +1,7 @@
+V 0.2.1
+
+- Continued rolling out experimental generic recyclers, this time using Unity's new Addressable system
+
 V 0.2.0
 
 - Finally brought in some recycler types into the library. Its a WIP to generalize these enough to be useful

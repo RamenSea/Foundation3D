@@ -1,5 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using RamenSea.Foundation3D.Extensions;
 using UnityEngine;
@@ -95,5 +96,4 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
         }
         public void Recycle(K key, T t) => this.indexedPrefabs[key].Recycle(t);
     }
-
 }

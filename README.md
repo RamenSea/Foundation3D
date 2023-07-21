@@ -5,7 +5,7 @@ ago.
 
 Not everything is here and its a WIP right now.
 
-Foundation's current version is: `0.2.0`
+Foundation's current version is: `0.2.1`
 
 ## Installation:
 
@@ -14,7 +14,7 @@ Add to your "package.json" file
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.dbrizov.naughtyattributes": "https://github.com/dbrizov/NaughtyAttributes.git#upm",
     "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.12.0",
-    "com.ramensea.foundation3d": "https://github.com/RamenSea/Foundation3D.git?path=/Packages/Foundation3D#0.2.0",
+    "com.ramensea.foundation3d": "https://github.com/RamenSea/Foundation3D.git?path=/Packages/Foundation3D#0.2.1",
 
 
 Todo:

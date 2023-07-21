@@ -8,7 +8,7 @@ namespace RamenSea.Foundation.Extensions {
             return default;
         }
 
-        public static V GetNullable<K, V>(this Dictionary<K, V> d, K key) where V : class {
+        public static V? GetNullable<K, V>(this Dictionary<K, V> d, K key) where V : class {
             if (d.TryGetValue(key, out var nullable)) return nullable;
 
             return null;

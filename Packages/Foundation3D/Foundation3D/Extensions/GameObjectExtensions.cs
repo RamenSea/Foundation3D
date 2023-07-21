@@ -14,7 +14,7 @@ namespace RamenSea.Foundation3D.Extensions {
             Object.Destroy(obj);
         }
 
-        public static T Instantiate<T>(this T t, Transform parent = null) where T : Object {
+        public static T Instantiate<T>(this T t, Transform? parent = null) where T : Object {
 #if UNITY_EDITOR
             if (UnityUtility.IsPlayMode() == false) {
                 var prefab = (T)PrefabUtility.InstantiatePrefab(t, parent);

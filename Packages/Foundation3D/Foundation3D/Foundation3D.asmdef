@@ -4,7 +4,9 @@
     "references": [
         "Foundation",
         "UniTask",
-        "NaughtyAttributes.Core"
+        "NaughtyAttributes.Core",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
