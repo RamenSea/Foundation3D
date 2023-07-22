@@ -1,3 +1,8 @@
+V 0.2.2
+
+- Did some improvements to the AddressableRecyclerBehavior, realizing generalizing it further made it extremely useful
+as an general purpose shared recycler
+
 V 0.2.1
 
 - Continued rolling out experimental generic recyclers, this time using Unity's new Addressable system
