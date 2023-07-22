@@ -3,124 +3,152 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using RamenSea.Foundation.Extensions;
+using RamenSea.Foundation.General;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using RamenSea.Foundation3D.Extensions;
 
 namespace RamenSea.Foundation3D.Components.Recyclers {
-    public interface IAsyncTypedRecycler<T>: IRecycler {
-        public UniTask<T> Get();
-    }
 
-    public class AddressableRecyclerObject : MonoBehaviour {
-        public AssetReference assetReference { internal set; get; }
-        public IRecycler recycler { internal set; get; }
+    public interface IAddressableRecycler {
+        public UniTask<AddressableRecyclerObject> Get();
+        public Transform? parentTransform { get; set; }
+        public UniTask LoadPrefabAsync();
+        public void Recycle(AddressableRecyclerObject obj);
+        public void Release();
     }
-    public class AddressableRecycler<T>: IAsyncTypedRecycler<T> where T: MonoBehaviour {
-        public Transform? parentTransform;
+    public class AddressableRecycler<T>: IAddressableRecycler where T: MonoBehaviour {
+        public Transform? parentTransform { get; set; }
         public readonly AssetReference reference;
         public T? prefab;
-        public readonly Stack<T> stack;
+        private readonly Stack<AddressableRecyclerObject> stack;
         public UniTaskCompletionSource? prefabLoad;
-        private AsyncOperationHandle<T> handle;
+        private AsyncOperationHandle<GameObject> handle;
 
+        private bool scriptIsAddressableRecyclerObject;
         public AddressableRecycler(AssetReference reference, Transform? parentTransform = null) {
             this.parentTransform = parentTransform;
             this.reference = reference;
             this.prefab = null;
             this.prefabLoad = null;
             this.stack = new();
+            this.scriptIsAddressableRecyclerObject = typeof(T).IsSubclassOf(typeof(AddressableRecyclerObject));
         }
-        public async UniTask<T> Get() {
-            T t;
+        public async UniTask<AddressableRecyclerObject> Get() {
+            AddressableRecyclerObject o;
             if (this.stack.Count > 0) {
-                t = this.stack.Pop();
-                t.gameObject.SetActive(true);
+                o = this.stack.Pop();
+                o.gameObject.SetActive(true);
             } else {
                 if (this.prefab == null) {
-                    await this.LoadPrefab();
+                    await this.LoadPrefabAsync();
                 }
-                t = this.prefab!.Instantiate(this.parentTransform);
+                var m = this.prefab!.Instantiate(this.parentTransform);
+                if (scriptIsAddressableRecyclerObject) {
+                    o = m as AddressableRecyclerObject;
+                } else {
+                    o = m.gameObject.AddGetComponent<AddressableRecyclerObject>();
+                }
+                o.script = m;
+                o.assetReference = this.reference;
             }
 
-            return t;
+            return o;
         }
 
-        private async UniTask LoadPrefab() {
+        public async UniTask LoadPrefabAsync() {
             if (this.prefabLoad != null) {
                 await this.prefabLoad.Task;
                 return;
             }
 
             this.prefabLoad = new UniTaskCompletionSource();
-            this.handle = Addressables.LoadAssetAsync<T>(this.reference);
-            await this.handle;
-            this.prefab = this.handle.Result;
+            this.handle = Addressables.LoadAssetAsync<GameObject>(this.reference);
+            await this.handle.Task;
+            //todo log failures here
+            this.prefab = this.handle.Result.GetComponent<T>();
             this.prefabLoad.TrySetResult();
         }
         public void Recycle(object o) {
-            this.Recycle((T) o);
+            var castedObj = o as AddressableRecyclerObject;
+            if (castedObj == null) {
+                var mono = o as MonoBehaviour;
+                if (mono == null) {
+                    throw new BaseFoundationException("Can not recycle this object");
+                }
+
+                castedObj = mono.gameObject.GetComponent<AddressableRecyclerObject>();
+            }
+            this.Recycle(castedObj);
         }
-        public void Recycle(T t) {
-            t.gameObject.SetActive(false);
-            this.stack.Push(t);
+        public void Recycle(AddressableRecyclerObject obj) {
+            obj.gameObject.SetActive(false);
+            this.stack.Push(obj);
         }
         public void Release() {
             Addressables.Release(this.handle);
         }
     }
     public class AddressableRecyclerBehavior: MonoBehaviour, IRecycler {
-        [SerializeField] protected Transform _parentTransform;
-        public Transform? parentTransform {
-            get => _parentTransform;
-            set {
-                if (this._parentTransform != value) {
-                    this._parentTransform = value;
-                    foreach (var keyValuePair in this.indexedRecyclers) {
-                        var p = this.indexedRecyclers[keyValuePair.Key];
-                        p.parentTransform = value;
-                        this.indexedRecyclers[keyValuePair.Key] = p;
-                    }
-                }
-            }
-        }
-        private Dictionary<AssetReference, AddressableRecycler<AddressableRecyclerObject>> indexedRecyclers;
+        [SerializeField] protected Transform defaultTransform;
+
+        private Dictionary<AssetReference, IAddressableRecycler> indexedRecyclers;
 
         protected virtual void Awake() {
             this.indexedRecyclers = new();
         }
 
-        public async UniTask<T> Get<T>(AssetReference key) where T: AddressableRecyclerObject  {
-            AddressableRecycler<AddressableRecyclerObject>? r = this.indexedRecyclers.GetNullable(key);;
+        public void SetParent<T>(AssetReference key, Transform parent) where T : MonoBehaviour {
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key);
             if (r == null) {
-                r = new AddressableRecycler<AddressableRecyclerObject>(key, this.parentTransform);
+                r = new AddressableRecycler<T>(key, parent);
+                this.indexedRecyclers[key] = r;
+            } else {
+                r.parentTransform = parent;
+            }
+
+        }
+        public UniTask Preload<T>(AssetReference key) where T: MonoBehaviour {
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key);
+            if (r == null) {
+                r = new AddressableRecycler<T>(key, this.defaultTransform);
+                this.indexedRecyclers[key] = r;
+            }
+            return r.LoadPrefabAsync();
+        }
+        public async UniTask<T> Get<T>(AssetReference key) where T: MonoBehaviour {
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key);;
+            if (r == null) {
+                r = new AddressableRecycler<T>(key, this.defaultTransform);
                 this.indexedRecyclers[key] = r;
             }
 
-            var t = await r.Get();
-            t.recycler = this;
-            return (T) t;
+            var o = await r.Get();
+            o.recycler = this;
+            o.OnGet();
+            return (T) o.script;
         }
-
         public void Recycle(object o) {
             this.Recycle((AddressableRecyclerObject) o);
         }
         public void Recycle(AddressableRecyclerObject t) {
             this.OnRecycle(t);
-            AddressableRecycler<AddressableRecyclerObject>? r = this.indexedRecyclers.GetNullable(t.assetReference);
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(t.assetReference);
             if (r != null) {
+                t.OnRecycle();
                 r.Recycle(t);
             }
         }
         protected virtual void OnRecycle(AddressableRecyclerObject t) { }
         protected virtual void Reset() {
-            this.parentTransform = this.transform;
+            this.defaultTransform = this.transform;
         }
         private void OnDestroy() {
             foreach (var pair in this.indexedRecyclers) {
                 pair.Value.Release();
             }
+            this.indexedRecyclers.Clear();
         }
     }
 }

@@ -23,5 +23,13 @@ namespace RamenSea.Foundation3D.Extensions {
 #endif
             return Object.Instantiate(t, parent);
         }
+        public static T AddGetComponent<T>(this GameObject go) where T : Component {
+            T t = go.GetComponent<T>();
+            if (t != null) {
+                return t;
+            }
+
+            return go.AddComponent<T>();
+        }
     }
 }
