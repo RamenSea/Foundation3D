@@ -1,3 +1,7 @@
+V 0.2.3
+
+- Fixed how issue with AddressableRecyclerBehavior allow shared addressables to be used
+- 
 V 0.2.2
 
 - Did some improvements to the AddressableRecyclerBehavior, realizing generalizing it further made it extremely useful

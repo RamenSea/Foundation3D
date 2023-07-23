@@ -8,11 +8,16 @@ namespace Tests.Recyclers {
 
         [SerializeField] private AddressableRecyclerBehavior recycler;
         [SerializeField] private AssetReference testAsset;
+        [SerializeField] private AssetReference testAssetAgain;
         [SerializeField] private AssetReference testAsset2;
         [SerializeField] private AssetReference testAsset3;
         [Button("Test spawn")]
         public void TestSpawn() {
             var t = this.recycler.Get<AddressableTestObj1>(this.testAsset);
+        }
+        [Button("Test spawn Again")]
+        public void TestSpawnAgain() {
+            var t = this.recycler.Get<AddressableTestObj1>(this.testAssetAgain);
         }
         [Button("Test spawn 2")]
         public void TestSpawn2() {

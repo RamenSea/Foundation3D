@@ -37,12 +37,15 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
         }
         public async UniTask<AddressableRecyclerObject> Get() {
             AddressableRecyclerObject o;
+            float spawnDelay = 0f;
             if (this.stack.Count > 0) {
                 o = this.stack.Pop();
                 o.gameObject.SetActive(true);
             } else {
                 if (this.prefab == null) {
+                    var loadTime = Time.time;
                     await this.LoadPrefabAsync();
+                    spawnDelay = Time.time - loadTime;
                 }
                 var m = this.prefab!.Instantiate(this.parentTransform);
                 if (scriptIsAddressableRecyclerObject) {
@@ -54,6 +57,7 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
                 o.assetReference = this.reference;
             }
 
+            o.spawnedDelay = spawnDelay;
             return o;
         }
 
@@ -93,35 +97,35 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
     public class AddressableRecyclerBehavior: MonoBehaviour, IRecycler {
         [SerializeField] protected Transform defaultTransform;
 
-        private Dictionary<AssetReference, IAddressableRecycler> indexedRecyclers;
+        private Dictionary<string, IAddressableRecycler> indexedRecyclers;
 
         protected virtual void Awake() {
             this.indexedRecyclers = new();
         }
 
         public void SetParent<T>(AssetReference key, Transform parent) where T : MonoBehaviour {
-            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key);
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key.AssetGUID);
             if (r == null) {
                 r = new AddressableRecycler<T>(key, parent);
-                this.indexedRecyclers[key] = r;
+                this.indexedRecyclers[key.AssetGUID] = r;
             } else {
                 r.parentTransform = parent;
             }
 
         }
         public UniTask Preload<T>(AssetReference key) where T: MonoBehaviour {
-            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key);
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key.AssetGUID);
             if (r == null) {
                 r = new AddressableRecycler<T>(key, this.defaultTransform);
-                this.indexedRecyclers[key] = r;
+                this.indexedRecyclers[key.AssetGUID] = r;
             }
             return r.LoadPrefabAsync();
         }
         public async UniTask<T> Get<T>(AssetReference key) where T: MonoBehaviour {
-            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key);;
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(key.AssetGUID);;
             if (r == null) {
                 r = new AddressableRecycler<T>(key, this.defaultTransform);
-                this.indexedRecyclers[key] = r;
+                this.indexedRecyclers[key.AssetGUID] = r;
             }
 
             var o = await r.Get();
@@ -134,7 +138,7 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
         }
         public void Recycle(AddressableRecyclerObject t) {
             this.OnRecycle(t);
-            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(t.assetReference);
+            IAddressableRecycler? r = this.indexedRecyclers.GetNullable(t.assetReference.AssetGUID);
             if (r != null) {
                 t.OnRecycle();
                 r.Recycle(t);
