@@ -91,7 +91,9 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
             this.stack.Push(obj);
         }
         public void Release() {
-            Addressables.Release(this.handle);
+            if (this.handle.IsValid()) {
+                Addressables.Release(this.handle);
+            }
         }
     }
     public class AddressableRecyclerBehavior: MonoBehaviour, IRecycler {
