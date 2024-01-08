@@ -1,3 +1,7 @@
+V 0.3.2
+
+- Made the new mechanic runner more configurable
+
 V 0.3.1
 
 - Some minor extension improvements

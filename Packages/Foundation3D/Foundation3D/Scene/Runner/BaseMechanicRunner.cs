@@ -15,13 +15,14 @@ namespace RamenSea.Foundation3D.Scene.Runner {
         [SerializeField] protected BaseMechanicBehavior[] internalMechanics;
         [SerializeField] protected BaseMechanicBehavior[] externalMechanics;
 
-#if UNITY_EDITOR
         protected virtual void Reset() {
-            this.EditorSetUp();
+            this.EditorRefresh();
         }
 
-        [Button("Fetch behaviors", EButtonEnableMode.Editor)]
-        protected void EditorSetUp() {
+        [Button("Refresh", EButtonEnableMode.Editor)]
+        protected void EditorRefresh() {
+#if UNITY_EDITOR
+            this.OnPreEditorRefresh();
             var mechanics = this.gameObject.GetComponentsInChildren<BaseMechanicBehavior>(true).ToList();
             mechanics.Sort();
             this.internalMechanics = mechanics.ToArray();
@@ -42,9 +43,17 @@ namespace RamenSea.Foundation3D.Scene.Runner {
                 EditorUtility.SetDirty(this.externalMechanics[i]);
             }
 
+            this.OnEditorRefresh();
             EditorUtility.SetDirty(this);
-        }
 #endif
-        
+        }
+
+        protected virtual void OnPreEditorRefresh() {
+            
+        }
+        protected virtual void OnEditorRefresh() {
+            
+        }
+
     }
 }

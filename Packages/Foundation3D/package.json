@@ -2,7 +2,7 @@
   "name": "com.ramensea.foundation3d",
   "displayName": "Foundation3D",
   "author": { "name": "RamenSea", "url": "https://github.com/RamenSea" },
-  "version": "0.3.1",
+  "version": "0.3.2",
   "unity": "2021.3",
   "description": "Foundational code for Unity3D",
   "keywords": ["tool"],

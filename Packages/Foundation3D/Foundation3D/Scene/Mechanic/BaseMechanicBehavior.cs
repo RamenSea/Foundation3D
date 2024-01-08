@@ -13,12 +13,7 @@ namespace RamenSea.Foundation3D.Scene.Mechanic {
             }
             return this.sortValue.CompareTo(other.sortValue);
         }
-        public virtual void EditorSetUp() {
-            
-        }
 
-        [Button("Set up", EButtonEnableMode.Editor)]
         public virtual void EditorSetUp(BaseMechanicRunner runner) { }
-
     }
 }
