@@ -4,6 +4,7 @@
     "references": [
         "Foundation",
         "UniTask",
+        "VContainer",
         "NaughtyAttributes.Core",
         "Unity.Addressables",
         "Unity.ResourceManager"

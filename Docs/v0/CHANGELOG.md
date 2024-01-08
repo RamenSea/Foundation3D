@@ -1,3 +1,8 @@
+V 0.3.0
+
+- Implemented a first draft of a simple DI system
+- Implemented a first draft of a game mechanic ordering system to help with game jams
+
 V 0.2.4
 
 - Fixed minor issue with AddressableRecyclerBehavior

@@ -2,13 +2,14 @@
   "name": "com.ramensea.foundation3d",
   "displayName": "Foundation3D",
   "author": { "name": "RamenSea", "url": "https://github.com/RamenSea" },
-  "version": "0.2.4",
+  "version": "0.3.0",
   "unity": "2021.3",
   "description": "Foundational code for Unity3D",
   "keywords": ["tool"],
   "category": "Tool",
   "dependencies": {
     "com.cysharp.unitask": "^2.2.5",
-    "com.dbrizov.naughtyattributes": "^2.1.4"
+    "com.dbrizov.naughtyattributes": "^2.1.4",
+    "jp.hadashikick.vcontainer": "^1.13.2"
   }
 }
