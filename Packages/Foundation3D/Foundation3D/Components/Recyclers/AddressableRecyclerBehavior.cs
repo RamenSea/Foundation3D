@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
                 }
                 var m = this.prefab!.Instantiate(this.parentTransform);
                 if (scriptIsAddressableRecyclerObject) {
-                    o = m as AddressableRecyclerObject;
+                    o = (m as AddressableRecyclerObject)!;
                 } else {
                     o = m.gameObject.AddGetComponent<AddressableRecyclerObject>();
                 }
@@ -97,7 +98,7 @@ namespace RamenSea.Foundation3D.Components.Recyclers {
         }
     }
     public class AddressableRecyclerBehavior: MonoBehaviour, IRecycler {
-        [SerializeField] protected Transform defaultTransform;
+        [SerializeField] protected Transform? defaultTransform;
 
         private Dictionary<string, IAddressableRecycler> indexedRecyclers;
 

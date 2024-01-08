@@ -9,6 +9,6 @@ namespace RamenSea.Foundation3D.Extensions {
         }
 
         public static HSVColor ToHSV(this Color color) => HSVColor.FromColor(color);
-
+        public static Color ToColor(this HSVColor hsv) => Color.HSVToRGB(hsv.hue, hsv.saturation, hsv.value, hsv.hdr);
     }
 }

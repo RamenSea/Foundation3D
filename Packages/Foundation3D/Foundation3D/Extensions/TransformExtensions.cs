@@ -13,11 +13,11 @@ namespace RamenSea.Foundation3D.Extensions {
         public static void LookAway(this Transform t, Vector3 position) {
             t.rotation = Quaternion.LookRotation(t.position - position);
         }
-        public static void SetPositionAndRotation(this Transform t, Transform toSet) {
-            t.SetPositionAndRotation(toSet.position, toSet.rotation);
+        public static void SetPositionAndRotation(this Transform t, Transform copy) {
+            t.SetPositionAndRotation(copy.position, copy.rotation);
         }
-        public static void SetLocalPositionAndRotation(this Transform t, Transform toSet) {
-            t.SetLocalPositionAndRotation(toSet.position, toSet.rotation);
+        public static void SetLocalPositionAndRotation(this Transform t, Transform copy) {
+            t.SetLocalPositionAndRotation(copy.position, copy.rotation);
         }
     }
 }

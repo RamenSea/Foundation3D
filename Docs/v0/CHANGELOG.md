@@ -1,3 +1,7 @@
+V 0.3.1
+
+- Some minor extension improvements
+
 V 0.3.0
 
 - Implemented a first draft of a simple DI system
