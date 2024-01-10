@@ -12,7 +12,10 @@ namespace RamenSea.Foundation3D.Extensions {
             return (degree * Mathf.Deg2Rad).RadianToDirection();
         }
 
-
+        public static Vector2 Multiply(this Vector2 vec2, Vector2 target) =>
+            new Vector2(vec2.x * target.x, vec2.y * target.y);
+        public static Vector2 Divide(this Vector2 vec2, Vector2 target) =>
+            new Vector2(vec2.x / target.x, vec2.y / target.y);
         public static Vector2 Abs(this Vector2 vector2) {
             return new Vector2(vector2.x.Abs(), vector2.y.Abs());
         }
