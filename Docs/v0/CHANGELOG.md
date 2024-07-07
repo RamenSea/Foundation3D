@@ -1,3 +1,10 @@
+V 0.3.4
+
+- Updated base project to Unity 6
+- Broke `Vector2`'s `Angle` method into `AngleRadian` and `AngleDegree`
+- Added `Vector2.Rotate`
+- Added `float.DegreeToRadian` and `float.RadianToDegree`
+
 V 0.3.3
 
 - Added some more minor extensions

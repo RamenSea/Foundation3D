@@ -74,10 +74,27 @@ namespace RamenSea.Foundation3D.Extensions {
             return container.y / vector2.y;
         }
 
-        public static float Angle(this Vector2 vector2) {
+        public static float Angle(this Vector2 vector2, bool inRadian = false) {
+            if (inRadian) {
+                return vector2.AngleRadian();
+            }
+            return vector2.AngleDegree();
+        }
+        public static float AngleRadian(this Vector2 vector2) {
+            if (vector2.x < 0)
+                return Mathf.PI * 2f - Mathf.Atan2(vector2.x, vector2.y) * -1;
+            return Mathf.Atan2(vector2.x, vector2.y);
+        }
+        public static float AngleDegree(this Vector2 vector2) {
             if (vector2.x < 0)
                 return 360 - Mathf.Atan2(vector2.x, vector2.y) * Mathf.Rad2Deg * -1;
             return Mathf.Atan2(vector2.x, vector2.y) * Mathf.Rad2Deg;
+        }
+        public static Vector2 Rotate(this Vector2 vector2, float radian) {
+            return new Vector2(
+                vector2.x * Mathf.Cos(radian) - vector2.y * Mathf.Sin(radian),
+                vector2.x * Mathf.Sin(radian) + vector2.y * Mathf.Cos(radian)
+                );
         }
 
         public static Vector2 Direction(this Vector2 vec2, Vector2 target) {

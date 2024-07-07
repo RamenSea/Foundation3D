@@ -97,7 +97,11 @@ namespace RamenSea.Foundation.Extensions {
         public static float Ceil(this float f) => MathF.Ceiling(f);
         public static float Floor(this float f) => MathF.Floor(f);
         public static float Clamp01(this float f) => Math.Max(Math.Min(1f, f), 0f);
-
+        public static float DegreeToRadian(this float f) => f * Deg2Rad;
+        public static float RadianToDegree(this float f) => f * Rad2Deg;
+        public const float Deg2Rad = 0.017453292f;
+        public const float Rad2Deg = 57.29578f;
+        
         //Doubles
         public static double Abs(this double d) => Math.Abs(d);
         public static byte ToByte(this double d) => (byte) d;
